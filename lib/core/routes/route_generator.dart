@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:weather_app/core/routes/routes.dart';
 import 'package:weather_app/features/home/home_screen.dart';
 import 'package:weather_app/features/splash_screen/splash_screen.dart';

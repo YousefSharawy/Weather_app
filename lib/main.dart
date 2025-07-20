@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:weather_app/core/routes/route_generator.dart';
 import 'package:weather_app/core/routes/routes.dart';
 import 'package:weather_app/core/shared/app_theme.dart';
@@ -12,11 +13,14 @@ class WeatherApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.darkTheme,
-      initialRoute: Routes.splash,
-      onGenerateRoute: RouteGenerator.getRoute,
+    return ScreenUtilInit(
+      
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.darkTheme,
+        initialRoute: Routes.splash,
+        onGenerateRoute: RouteGenerator.getRoute,
+      ),
     );
   }
 }
