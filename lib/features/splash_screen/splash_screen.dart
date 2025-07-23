@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:weather_app/core/resources/assets_manager.dart';
 import 'package:weather_app/core/resources/color_manager.dart';
-import 'package:weather_app/features/home/home_screen.dart';
+import 'package:weather_app/features/home/representations/screens/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
