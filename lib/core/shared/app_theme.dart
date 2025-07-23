@@ -17,7 +17,7 @@ class AppTheme {
       ),
     ),
     colorScheme: ColorScheme.fromSeed(
-      onSurface: ColorManager.white, 
+      onSurface: ColorManager.white,
 
       seedColor: ColorManager.white,
       primary: ColorManager.white,

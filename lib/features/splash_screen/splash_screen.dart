@@ -12,56 +12,110 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Alignment> topRight;
   late Animation<Alignment> bottomLeft;
-@override
+  @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this ,duration: Duration(seconds: 10));
-    topRight = TweenSequence <Alignment> ([
-      TweenSequenceItem(tween: Tween<Alignment>(begin: Alignment.topRight , end: Alignment.bottomRight), weight: 1),
-      TweenSequenceItem(tween: Tween<Alignment>(begin: Alignment.bottomRight , end: Alignment.bottomLeft), weight: 1),
-      TweenSequenceItem(tween: Tween<Alignment>(begin: Alignment.bottomLeft , end: Alignment.topLeft), weight: 1),
-      TweenSequenceItem(tween: Tween<Alignment>(begin: Alignment.topLeft , end: Alignment.topRight), weight: 1),
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 10),
+    );
+    topRight = TweenSequence<Alignment>([
+      TweenSequenceItem(
+        tween: Tween<Alignment>(
+          begin: Alignment.topRight,
+          end: Alignment.bottomRight,
+        ),
+        weight: 1,
+      ),
+      TweenSequenceItem(
+        tween: Tween<Alignment>(
+          begin: Alignment.bottomRight,
+          end: Alignment.bottomLeft,
+        ),
+        weight: 1,
+      ),
+      TweenSequenceItem(
+        tween: Tween<Alignment>(
+          begin: Alignment.bottomLeft,
+          end: Alignment.topLeft,
+        ),
+        weight: 1,
+      ),
+      TweenSequenceItem(
+        tween: Tween<Alignment>(
+          begin: Alignment.topLeft,
+          end: Alignment.topRight,
+        ),
+        weight: 1,
+      ),
     ]).animate(_controller);
-    bottomLeft = TweenSequence <Alignment> ([
-      TweenSequenceItem(tween: Tween<Alignment>(begin: Alignment.bottomLeft , end: Alignment.topLeft), weight: 1),
-      TweenSequenceItem(tween: Tween<Alignment>(begin: Alignment.topLeft , end: Alignment.topRight), weight: 1),
-      TweenSequenceItem(tween: Tween<Alignment>(begin: Alignment.topRight , end: Alignment.bottomRight), weight: 1),
-      TweenSequenceItem(tween: Tween<Alignment>(begin: Alignment.bottomRight , end: Alignment.bottomLeft), weight: 1),
+    bottomLeft = TweenSequence<Alignment>([
+      TweenSequenceItem(
+        tween: Tween<Alignment>(
+          begin: Alignment.bottomLeft,
+          end: Alignment.topLeft,
+        ),
+        weight: 1,
+      ),
+      TweenSequenceItem(
+        tween: Tween<Alignment>(
+          begin: Alignment.topLeft,
+          end: Alignment.topRight,
+        ),
+        weight: 1,
+      ),
+      TweenSequenceItem(
+        tween: Tween<Alignment>(
+          begin: Alignment.topRight,
+          end: Alignment.bottomRight,
+        ),
+        weight: 1,
+      ),
+      TweenSequenceItem(
+        tween: Tween<Alignment>(
+          begin: Alignment.bottomRight,
+          end: Alignment.bottomLeft,
+        ),
+        weight: 1,
+      ),
     ]).animate(_controller);
 
     _controller.repeat();
   }
-   @override
+
+  @override
   void dispose() {
-    _controller.dispose(); 
+    _controller.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _controller,
-      builder: (context,_) { 
-       return Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: topRight.value,
-            end: bottomLeft.value,
-            colors: [ColorManager.lightPurple,ColorManager.darkerPurple],
+      builder: (context, _) {
+        return Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: topRight.value,
+              end: bottomLeft.value,
+              colors: [ColorManager.lightPurple, ColorManager.darkerPurple],
+            ),
           ),
-        ),
-        child: AnimatedSplashScreen(
-          duration: 3200,
-          backgroundColor: Colors.transparent,
-          splashIconSize: 300,
-          splash: LottieBuilder.asset(AssetsManager.loadingIndicator),
-          nextScreen: HomeScreen(),
-        ),
-      );
-       },
+          child: AnimatedSplashScreen(
+            duration: 3200,
+            backgroundColor: Colors.transparent,
+            splashIconSize: 300,
+            splash: LottieBuilder.asset(AssetsManager.loadingIndicator),
+            nextScreen: HomeScreen(),
+          ),
+        );
+      },
     );
   }
 }

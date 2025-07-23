@@ -8,7 +8,7 @@ import 'package:weather_app/core/di/service_locator.dart';
 import 'package:weather_app/core/shared/bloc_observer.dart';
 import 'package:weather_app/features/home/representations/cubit/weather_cubit.dart';
 
-void main()  {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
   configureDependencies();
   Bloc.observer = AppBlocObserver();

@@ -11,6 +11,9 @@ class FontSizeManager {
   static double s20 = 20.sp;
   static double s22 = 22.sp;
   static double s24 = 24.sp;
+  static double s28 = 28.sp;
+  static double s32 = 32.sp;
+  static double s40 = 40.sp;
 }
 
 class FontWeightManager {
@@ -21,3 +24,4 @@ class FontWeightManager {
   static const FontWeight bold = FontWeight.w700;
   static const FontWeight extraBold = FontWeight.w800;
 }
+

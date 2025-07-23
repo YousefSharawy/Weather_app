@@ -14,8 +14,8 @@ class CurrentWeatherApiRemoteDataSource implements WeatherRemoteDataSource {
   Future<WeatherModel> getCurrentWeather(String? cityName) async {
     try {
       final response = await dio.get(
-        ApiConstants.currentWeatherEndpoint,
-        queryParameters: {"q": cityName ?? "Egypt",},
+        ApiConstants.forecastWeatherEndpoint,
+        queryParameters: {"q": cityName ?? "Egypt"},
       );
       return WeatherModel.fromJson(response.data);
     } catch (exception) {

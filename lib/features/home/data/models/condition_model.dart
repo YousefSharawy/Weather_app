@@ -1,4 +1,3 @@
-
 class ConditionModel {
   final String text;
   final String icon;
@@ -11,5 +10,4 @@ class ConditionModel {
     icon: json['icon'] as String,
     code: json['code'] as int?,
   );
-
 }

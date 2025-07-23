@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:weather_app/core/resources/assets_manager.dart';
 import 'package:weather_app/core/resources/color_manager.dart';
 import 'package:weather_app/core/resources/font_manager.dart';
 import 'package:weather_app/core/utilities/utiles.dart';
@@ -10,7 +11,7 @@ import 'package:weather_app/features/home/representations/cubit/weather_cubit.da
 import 'package:weather_app/features/home/representations/cubit/weather_states.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -19,15 +20,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   TextEditingController searchController = TextEditingController();
 
-  final List<String> days = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
-  ];
   late final WeatherCubit weatherCubit;
   late String? cityName;
   @override
@@ -123,8 +115,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     Text(
                       weatherCubit.currentWeather?.location.name ?? "Unknown",
                       style: TextStyle(
-                        fontSize: FontSizeManager.s24,
-                        fontWeight: FontWeightManager.semiBold,
+                        fontSize: FontSizeManager.s28,
+                        fontWeight: FontWeightManager.bold,
+                        fontFamily: "FjallaOne",
                         color: ColorManager.white.withValues(alpha: 0.75),
                       ),
                     ),
@@ -132,34 +125,114 @@ class _HomeScreenState extends State<HomeScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          "${weatherCubit.currentWeather?.current.tempC.toString() ?? "0"}°C",
-                          style: TextStyle(
-                            fontSize: FontSizeManager.s12,
-                            fontWeight: FontWeightManager.regular,
-                            color: ColorManager.white.withValues(alpha: 0.9),
-                          ),
+                        Image.network(
+                          "https:${weatherCubit.currentWeather?.current.condition.icon ?? ""}",
+                          width: 40.w,
+                          height: 40.h,
+                          errorBuilder: (context, error, stackTrace) {
+                            return SizedBox.shrink();
+                          },
                         ),
                       ],
                     ),
-                    Image.network(
-                      "https:${weatherCubit.currentWeather?.current.condition.icon ?? ""}",
-                      width: 40.w,
-                      height: 40.h,
-                      errorBuilder: (context, error, stackTrace) {
-                        return SizedBox.shrink();
-                      },
+                    Text(
+                      "${weatherCubit.currentWeather?.current.tempC.toString() ?? "0"} °C",
+                      style: TextStyle(
+                        fontFamily: "FjallaOne",
+                        fontSize: FontSizeManager.s40,
+                        fontWeight: FontWeightManager.regular,
+                        color: ColorManager.white.withValues(alpha: 0.9),
+                      ),
                     ),
-
-                    SizedBox(
-                      height: MediaQuery.sizeOf(context).height * 0.08.h,
-                    ),
+                    SizedBox(height: 30.h),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(25.r),
                       child: BackdropFilter(
                         filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
                         child: Container(
-                          height: 300.h,
+                          height: 60.h,
+                          width: 300.w,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [Colors.white60, Colors.white10],
+                            ),
+                            color: ColorManager.white.withValues(alpha: 0.3),
+                            borderRadius: BorderRadius.circular(25.r),
+                            border: Border.all(
+                              width: 2.w,
+                              color: ColorManager.white.withValues(alpha: 0.3),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SizedBox(height: 5.h),
+
+                                  Image.asset(
+                                    AssetsManager.humidity,
+                                    height: 30.h,
+                                    width: 30.w,
+                                  ),
+                                 Text(" ${weatherCubit.currentWeather?.current.humidity  ?? 0} %",style: TextStyle(fontWeight: FontWeightManager.bold),)
+                                ],
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 8.h),
+                                child: VerticalDivider(
+                                  color: ColorManager.white,
+                                ),
+                              ),
+                               Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SizedBox(height: 5.h),
+
+                                 Image.asset(
+                                    AssetsManager.wind,
+                                    height: 30.h,
+                                    width: 30.w,
+                                    matchTextDirection: true,
+                                  ),
+                                 Text(" ${weatherCubit.currentWeather?.current.windKph  ?? 0} km/h",style: TextStyle(fontWeight: FontWeightManager.bold),)
+                                ],
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 8.h),
+                                child: VerticalDivider(
+                                  color: ColorManager.white,
+                                ),
+                              ),
+                               Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SizedBox(height: 5.h),
+
+                                  Image.asset(
+                                    AssetsManager.windDirection,
+                                    height: 30.h,
+                                    width: 30.w,
+                                  ),
+                                 Text(" ${weatherCubit.currentWeather?.current.windDir?? ""}",style: TextStyle(fontWeight: FontWeightManager.bold),)
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: 35.h),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(25.r),
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                        child: Container(
+                          height: 250.h,
                           width: 300.w,
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
@@ -176,11 +249,29 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           child: Column(
                             children: [
-                              SizedBox(height: 10.h),
                               Expanded(
                                 child: ListView.builder(
-                                  itemCount: days.length,
+                                  itemCount:
+                                      weatherCubit
+                                          .currentWeather
+                                          ?.forecast
+                                          .forecastday
+                                          .first
+                                          .hour
+                                          .length ??
+                                      0,
                                   itemBuilder: (_, index) {
+                                    final hourData = weatherCubit
+                                        .currentWeather
+                                        ?.forecast
+                                        .forecastday
+                                        .first
+                                        .hour[index];
+
+                                    if (hourData == null) {
+                                      return SizedBox.shrink();
+                                    }
+
                                     return Container(
                                       margin: EdgeInsets.symmetric(
                                         horizontal: 7.w,
@@ -218,7 +309,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
-                                              days[index],
+                                              hourData.time.split(' ').last,
                                               style: TextStyle(
                                                 fontSize: FontSizeManager.s12,
                                                 fontWeight:
@@ -228,7 +319,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ),
                                             ),
                                             Text(
-                                              "25°C",
+                                              "${hourData.tempC}°C",
                                               style: TextStyle(
                                                 fontSize: FontSizeManager.s12,
                                                 fontWeight:
@@ -237,6 +328,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     .withValues(alpha: 0.9),
                                               ),
                                             ),
+                                            Image.network(
+                                              "https:${hourData.condition.icon}",
+                                              width: 30.w,
+                                              height: 30.h,
+                                              errorBuilder:
+                                                  (context, error, stackTrace) {
+                                                    return SizedBox.shrink();
+                                                  },
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -244,7 +344,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   },
                                 ),
                               ),
-                              SizedBox(height: 5.h),
                             ],
                           ),
                         ),

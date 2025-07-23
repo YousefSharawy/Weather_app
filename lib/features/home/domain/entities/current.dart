@@ -9,18 +9,15 @@ class Current {
   final String windDir;
   final int humidity;
   final int cloud;
-  
 
   const Current({
-   
-   required this.tempC,
-   required this.isDay,
-   required this.condition,
-   required this.windKph,
-   required this.windDegree,
-   required this.windDir,
-   required this.humidity,
-   required this.cloud,
-  
+    required this.tempC,
+    required this.isDay,
+    required this.condition,
+    required this.windKph,
+    required this.windDegree,
+    required this.windDir,
+    required this.humidity,
+    required this.cloud,
   });
 }

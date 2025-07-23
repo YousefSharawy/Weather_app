@@ -10,6 +10,7 @@ class CurrentWeatherLoaded extends WeatherState {
   final Weather weather;
   CurrentWeatherLoaded(this.weather);
 }
+
 class CurrentWeatherError extends WeatherState {
   final String message;
 

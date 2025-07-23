@@ -9,7 +9,7 @@ class WeatherCubit extends Cubit<WeatherState> {
   WeatherCubit(this.getWeatherUseCase) : super(WeatherInitial());
 
   final GetWeather getWeatherUseCase;
-    Weather ? currentWeather;
+  Weather? currentWeather;
 
   Future<void> fetchCurrentWeather(String cityName) async {
     emit(CurrentWeatherLoading());
