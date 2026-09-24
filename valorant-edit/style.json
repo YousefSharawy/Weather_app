@@ -1,0 +1,25 @@
+{
+  "source": "valorant.MP4 reference (28.6s, 30fps, ~123 BPM)",
+  "fps": 30,
+  "beat_offset_frames": 3,
+  "sections": [
+    {"name": "fade_in",       "start_beat": null, "dur_s": 0.3,  "fx": ["levels_fade_in"]},
+    {"name": "intro_lyric",   "cuts_per_beat": 0,   "clip": "showcase", "fx": ["lyric_type_red_glow"]},
+    {"name": "pre_drop",      "dur_beats": 0.25, "fx": ["text_glitch"]},
+    {"name": "drop1",         "fx": ["white_flash", "radial_zoom_blur"], "clip": "best_kill"},
+    {"name": "reaction",      "dur_beats": 1.25, "fx": ["red_glow_frame", "reaction_overlay"]},
+    {"name": "breather",      "dur_beats": 5,  "clip": "showcase", "speed": 0.5},
+    {"name": "drop2",         "fx": ["white_flash"]},
+    {"name": "fast_montage",  "dur_beats": 16, "cuts_per_beat": [0.5, 1, 2], "fx": ["whip_blur", "speed_lines", "rgb_split_on_kill"], "lyric": "bg_giant_letters"},
+    {"name": "beat_chain",    "dur_beats": 16, "cuts_per_beat": 1, "kill_on_beat": true, "fx": ["whip_blur", "rgb_split_on_kill"]},
+    {"name": "freeze",        "dur_beats": 2,  "fx": ["freeze_hold"]},
+    {"name": "final_kill",    "dur_beats": 0.75, "clip": "flashiest_kill"},
+    {"name": "crush_out",     "dur_s": 0.5, "fx": ["levels_crush_to_black"]},
+    {"name": "outro_card",    "dur_s": 4.0, "fx": ["handle_card"]}
+  ],
+  "clip_trim": {"pre_kill_frames": [0, 3], "post_kill_frames": [10, 12]},
+  "whip_blur": {"frames": 3, "direction": "match_flick"},
+  "white_flash": {"frames": [1, 2], "only_on": ["drop1", "drop2"]},
+  "text": {"reveal_frames_per_letter": [2, 3], "word_ends_on_beat": true},
+  "grade": {"saturation": 1.45, "contrast": 1.15, "sharpen": 0.6}
+}
