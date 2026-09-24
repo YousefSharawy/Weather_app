@@ -67,7 +67,7 @@ optical flow (pan / zoom / rotation), brightness, saturation, plus beat / onset 
 The song is taken from the reference video, so the reference's measured cut grid is reused 1:1.
 
 ```
-python edit.py --kills kills.json --song valorant.MP4 --out my_edit.mp4 --aspect 16:9 --handle @me
+python edit.py --kills kills.json --song valorant.MP4 --out my_edit.mp4 --handle YOUSEF   # vertical 9:16 by default
 ```
 
 - `kills.json` lists `showcase` shots (slow knife/skin moments for the intro and breather) and `kills`
