@@ -190,7 +190,17 @@ def red_frame(img, t):
 
 
 # ---------------------------------------------------------------- text
-FONT = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+FONT_CANDIDATES = [
+    "/System/Library/Fonts/Supplemental/Impact.ttf",          # macOS
+    "/Library/Fonts/Impact.ttf",
+    "/System/Library/Fonts/Supplemental/Arial Black.ttf",
+    "C:/Windows/Fonts/impact.ttf",
+    "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",   # Linux fallback
+]
+FONT = next((f for f in FONT_CANDIDATES if os.path.exists(f)), None)
+if FONT is None:
+    sys.exit("no bold font found; edit FONT_CANDIDATES in edit.py")
+CONDENSE = 1.0 if "mpact" in FONT else 0.72  # Impact is already condensed
 
 
 def text_layer(W, H, word, style, t_in):
@@ -204,7 +214,7 @@ def text_layer(W, H, word, style, t_in):
     d = ImageDraw.Draw(canvas)
     fill = (255, 40, 50, 255) if style == "red" else (235, 235, 235, 150)
     d.text((size // 2, size // 8), shown, font=font, fill=fill)
-    canvas = canvas.resize((int(canvas.width * 0.72), canvas.height))  # condensed look
+    canvas = canvas.resize((int(canvas.width * CONDENSE), canvas.height))  # condensed look
     if style == "red":
         glow = canvas.filter(ImageFilter.GaussianBlur(size / 10))
         g = Image.new("RGBA", canvas.size, (255, 0, 30, 0))
