@@ -11,7 +11,7 @@ kills.json:
   {"showcase": [{"clip": "clips/a.mp4", "start": 3.0}],        # slow knife/skin shots (intro + breather)
    "kills":    [{"clip": "clips/b.mp4", "t": 12.4, "score": 5}]} # t = moment the kill registers (s)
 """
-import argparse, json, math, os, random, subprocess, sys
+import argparse, json, math, os, random, shutil, subprocess, sys
 import cv2
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
@@ -318,7 +318,10 @@ def render(spec, song, out, W, H, handle, lyrics_path, preview_every=0):
     cut_frames = [F(s["a"]) for s in tl[1:]]
     lines = SpeedLines(W, H)
     tmp = out + ".video.mp4"
-    ff = os.environ.get("FFMPEG", "ffmpeg")
+    ff = os.environ.get("FFMPEG") or shutil.which("ffmpeg")
+    if not ff:
+        import imageio_ffmpeg
+        ff = imageio_ffmpeg.get_ffmpeg_exe()
     proc = subprocess.Popen([ff, "-loglevel", "error", "-y", "-f", "rawvideo", "-pix_fmt", "bgr24",
                              "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-", "-c:v", "libx264", "-preset", "medium",
                              "-crf", "17", "-pix_fmt", "yuv420p", tmp], stdin=subprocess.PIPE)
