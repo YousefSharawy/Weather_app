@@ -61,3 +61,19 @@ optical flow (pan / zoom / rotation), brightness, saturation, plus beat / onset 
 2. Detect beats and energy sections in your song.
 3. Put your 1–2 flashiest kills on the drops, the rest one per beat in the peak section, and a slow showcase clip in the quiet part.
 4. Apply the effect vocabulary above at the same positions relative to the music, then render.
+
+## 7. Rendering (`edit.py`)
+
+The song is taken from the reference video, so the reference's measured cut grid is reused 1:1.
+
+```
+python edit.py --kills kills.json --song valorant.MP4 --out my_edit.mp4 --aspect 16:9 --handle @me
+```
+
+- `kills.json` lists `showcase` shots (slow knife/skin moments for the intro and breather) and `kills`
+  (`clip`, `t` = second the kill registers, `score` = hype). The top score goes on drop 1, the second on the
+  final kill after the freeze, and the rest go on the beat grid one per beat. If there are fewer kills than
+  slots, neighbouring slots merge into 2-beat holds.
+- Lyric text defaults to the reference's ("YOU SHOULD NOW I", "TAKE CONTROL"). Override it with `lyrics.json`.
+- The reference audio ends at 26.77 s. Silence is padded so the outro card keeps its full length.
+- Needs: `pip install opencv-python-headless numpy pillow librosa imageio-ffmpeg`, with ffmpeg on PATH or `FFMPEG=`.
