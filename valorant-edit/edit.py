@@ -269,13 +269,20 @@ def build_timeline(spec):
         sys.exit("need at least 3 kills")
     drop_kill, final_kill, rest = kills[0], kills[1], kills[2:]
     # chronological feel for the rest, keep source order
-    rest = sorted(rest, key=lambda k: (k["clip"], k["t"]))
+    # rest keeps the given order (pick_kills.py writes it in play order)
     cuts = list(MONTAGE_CUTS)
     slots = list(zip(cuts[:-1], cuts[1:]))
     # merge shortest neighbouring slots until slots == kills (two-beat holds)
+    # merge shortest neighbours into holds of at most ~2 beats until slots == kills
     while len(slots) > len(rest):
-        i = min(range(len(slots) - 1), key=lambda j: (slots[j][1] - slots[j][0]) + (slots[j + 1][1] - slots[j + 1][0]))
+        pairs = [j for j in range(len(slots) - 1) if slots[j + 1][1] - slots[j][0] <= 1.05]
+        if not pairs:
+            break
+        i = min(pairs, key=lambda j: slots[j + 1][1] - slots[j][0])
         slots[i:i + 2] = [(slots[i][0], slots[i + 1][1])]
+    if len(rest) < len(slots):
+        print(f"note: {len(rest)} kills for {len(slots)} beat slots, reusing kills (pick ~{len(slots)} for no repeats)")
+        rest = [rest[i % len(rest)] for i in range(len(slots))]
     rest = rest[:len(slots)]
     show = spec.get("showcase") or [{"clip": kills[-1]["clip"], "start": max(0, kills[-1]["t"] - 4)}]
     tl = []
@@ -285,7 +292,7 @@ def build_timeline(spec):
                    src=drop_kill["t"] - KILL_LEAD / FPS, speed=1.0, kill=DROP1[0] + KILL_LEAD / FPS))
     s1 = show[1] if len(show) > 1 else s0
     tl.append(dict(kind="showcase", a=BREATHER[0], b=BREATHER[1], clip=s1["clip"],
-                   src=s1["start"] + (0 if len(show) > 1 else 3.2), speed=0.5))
+                   src=s1["start"] + (0 if len(show) > 1 else 0.4), speed=0.5))
     for (a, b), k in zip(slots, rest):
         tl.append(dict(kind="kill", a=a, b=b, clip=k["clip"], src=k["t"] - KILL_LEAD / FPS, speed=1.0,
                        kill=a + KILL_LEAD / FPS))

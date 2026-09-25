@@ -77,3 +77,12 @@ python edit.py --kills kills.json --song valorant.MP4 --out my_edit.mp4 --handle
 - Lyric text defaults to the reference's ("YOU SHOULD NOW I", "TAKE CONTROL"). Override it with `lyrics.json`.
 - The reference audio ends at 26.77 s. Silence is padded so the outro card keeps its full length.
 - Needs: `pip install opencv-python-headless numpy pillow librosa imageio-ffmpeg`, with ffmpeg on PATH or `FFMPEG=`.
+
+## 8. Workflow for a big folder of clips
+
+1. `python3 find_kills.py /Volumes/lexa4/valorant`: scans every clip, cuts each kill into `kills/kill_###.mp4`
+   (2 s before, 2.5 s after), and writes `kills/candidates.json` plus a `kills/index.html` gallery.
+   If kills are missed, use `--sensitivity 0.8`. If there are too many false ones, use `1.2`.
+2. Open `kills/index.html`, watch the kills, and tick about 23 (21 for the beat chain plus 2 hero kills).
+3. `python3 pick_kills.py /Volumes/lexa4/valorant/kills --pick <ids in play order> --drop <id> --final <id> [--showcase <ids>]`
+4. `python3 edit.py --kills kills.json --song ~/Downloads/valorant.MP4 --out /Volumes/lexa4/valorant/yousef_edit.mp4`
