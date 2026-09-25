@@ -4,7 +4,8 @@ Detection combines three signals per clip:
   * audio   - sharp transient of the kill sound (onset strength, high-frequency weighted)
   * banner  - sudden change in the bottom-centre HUD region where the kill skull/banner pops
   * feed    - sudden change in the top-right kill feed
-A candidate needs a strong audio hit, or a medium audio hit backed by one of the visual signals.
+A candidate must have the bottom-centre kill banner (only shown for YOUR kills) plus the kill sound.
+The kill feed is recorded but never counts on its own, because it also lists teammates' kills.
 
 Output (in --out, default <clips>/kills):
   kill_001.mp4 ...     standalone cuts, PRE seconds before the kill to POST seconds after
@@ -94,8 +95,10 @@ def detect(path, sens):
     win = int(0.3 * VFPS)
     bmax = np.array([b[i:i + win + 1].max() for i in range(len(b))])
     fmax = np.array([f[i:i + win + 1].max() for i in range(len(f))])
-    score = a + 0.6 * np.maximum(bmax, fmax)
-    ok = ((a > 6 * sens) | ((a > 3.5 * sens) & (np.maximum(bmax, fmax) > 3 * sens)))
+    # Only YOUR kills pop the bottom-centre kill banner (skull + kill count) and play the kill sound.
+    # The top-right kill feed also shows teammates' kills, so it is never enough on its own.
+    score = a + bmax
+    ok = (bmax > 3 * sens) & (a > 2.5 * sens)
     idx = [i for i in range(1, len(a) - 1) if ok[i] and a[i] >= a[i - 1] and a[i] >= a[i + 1]]
     # non-max suppression: one kill per 0.6s
     idx.sort(key=lambda i: -score[i])
