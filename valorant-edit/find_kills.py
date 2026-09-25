@@ -14,6 +14,7 @@ Output (in --out, default <clips>/kills):
   index.html           gallery to watch every kill and pick favourites
 
 Usage:
+  python find_kills.py /Volumes/lexa4/valorant --marks marks.json   # cut the kills you marked (reliable)
   python find_kills.py /Volumes/lexa4/valorant
   python find_kills.py /Volumes/lexa4/valorant --sensitivity 0.8   # lower = more candidates
 """
@@ -164,6 +165,7 @@ def main():
     ap.add_argument("clips")
     ap.add_argument("--out")
     ap.add_argument("--sensitivity", type=float, default=1.0)
+    ap.add_argument("--marks", help="marks.json from marker.html: use your own kill marks instead of auto-detection")
     a = ap.parse_args()
     out = a.out or os.path.join(a.clips, "kills")
     os.makedirs(out, exist_ok=True)
@@ -171,9 +173,15 @@ def main():
                    and not os.path.basename(p).startswith(("._", "yousef_edit")))
     if not files:
         sys.exit(f"no videos in {a.clips}")
+    marks = json.load(open(a.marks)) if a.marks else None
+    if marks is not None:
+        files = [p for p in files if marks.get(os.path.basename(p))]
     cands = []
     for n, p in enumerate(files, 1):
-        found = detect(p, a.sensitivity)
+        if marks is not None:
+            found = [dict(t=t, score=0, signals="marked") for t in marks.get(os.path.basename(p), [])]
+        else:
+            found = detect(p, a.sensitivity)
         print(f"[{n}/{len(files)}] {os.path.basename(p)}: {len(found)} kill(s)", flush=True)
         for k in found:
             cid = len(cands) + 1

@@ -80,6 +80,15 @@ python edit.py --kills kills.json --song valorant.MP4 --out my_edit.mp4 --handle
 
 ## 8. Workflow for a big folder of clips
 
+**Recommended: mark kills yourself.** Auto-detection confuses round starts, whiffs and teammates' kills with your kills.
+
+1. `python3 make_marker.py /Volumes/lexa4/valorant`, then `open /Volumes/lexa4/valorant/marker.html`
+2. Watch each clip and press **K** on every one of your kills (N = next clip, Z = undo, 1-4 = speed). Then click **Download marks.json**.
+3. `python3 find_kills.py /Volumes/lexa4/valorant --marks ~/Downloads/marks.json` cuts exactly those kills into `kills/`.
+4. Continue from step 2 below (gallery, then pick_kills, then edit).
+
+Auto-detect alternative:
+
 1. `python3 find_kills.py /Volumes/lexa4/valorant`: scans every clip, cuts each kill into `kills/kill_###.mp4`
    (2 s before, 2.5 s after), and writes `kills/candidates.json` plus a `kills/index.html` gallery.
    If kills are missed, use `--sensitivity 0.8`. If there are too many false ones, use `1.2`.
